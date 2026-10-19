@@ -1,0 +1,1 @@
+ANGLE Deck v0.8.0 - Quiet launch, read-only SurfaceFlinger audit, selected-game recovery, HWUI default fix.

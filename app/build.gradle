@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.angledeck.control'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.angledeck.control'
+        minSdk 29
+        targetSdk 35
+        versionCode 9
+        versionName '0.8.0'
+    }
+
+    // When CI restores the device-owned signing key, all later APKs keep the same signature.
+    // Without those environment variables, local builds still use Android's debug key.
+    signingConfigs {
+        personal {
+            if (System.getenv('ANGLE_KEYSTORE_PATH')) {
+                storeFile file(System.getenv('ANGLE_KEYSTORE_PATH'))
+                storePassword System.getenv('ANGLE_KEYSTORE_PASS') ?: ''
+                keyAlias System.getenv('ANGLE_KEY_ALIAS') ?: 'angledeck'
+                keyPassword System.getenv('ANGLE_KEY_PASS') ?: ''
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            if (System.getenv('ANGLE_KEYSTORE_PATH')) {
+                signingConfig signingConfigs.personal
+            }
+        }
+    }
+
+    buildFeatures {
+        aidl true
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
+}
